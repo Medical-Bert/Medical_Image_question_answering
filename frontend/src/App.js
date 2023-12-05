@@ -1,7 +1,8 @@
 import './App.css';
 import SignUp from './Components/signup';
 import LoginPage from './Components/login';
-import Tester from './Components/test';
+import Tester from './Components/rester';
+import Suggestion from './Components/sample';
 
 
 import React, { useEffect, useState } from "react";
@@ -87,7 +88,7 @@ function App() {
                 />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/login" element={<LoginPage />} />
-                <Route path="/test" element={<Tester />} />
+                <Route path="/test" element={<Suggestion />} />
                 <Route path="/verify" element={<Verification />} />
             </Routes>
         </Router>
