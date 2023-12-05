@@ -15,6 +15,7 @@ router.get('/login', authController.login);
 router.get('/profile', authController.getProfile);
 router.get('/getotp', authController.getotp);
 router.post('/imgupload', authController.imgupload);
+router.post('/storeInfo', authController.storeInfo);
 
 // Add the new route for getans
 router.post('/modeloutput', authController.modeloutput);
