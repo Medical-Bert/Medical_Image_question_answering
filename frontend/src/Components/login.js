@@ -30,6 +30,7 @@ const LoginPage = () => {
                 axios.get('http://localhost:5000/profile', { withCredentials: true })
                     .then((response) => {
                         const { username } = response.data;
+                        localStorage.setItem('loggeduser', username);
                     })
                     .catch((error) => {
                         console.error(error);

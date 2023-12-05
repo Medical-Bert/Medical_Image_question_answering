@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const UserModel = require('../models/userModel');
 const nodemailer = require('nodemailer');
+const DatasaverModel = require('../models/dataModel');
 
 
 const FormData = require('form-data');
@@ -14,6 +15,63 @@ var otp1 = 1;
 
 const multer = require('multer');
 const { application } = require('express');
+
+
+const storeInfo = async (req, res) => {
+    try {
+        const { userId, imageData, qaPairs } = req.body;
+
+        const user = await UserModel.findOne({ _id: userId });
+
+        if (user) {
+            // Check if the user already has an entry in the datasaver model
+            const existingDataSaver = await DatasaverModel.findOne({ user: userId });
+
+            if (existingDataSaver) {
+                // User exists, check if the image already exists
+                const existingImage = existingDataSaver.data.find(item => item.image === imageData);
+
+                if (existingImage) {
+                    // Image exists, append the new question and answers
+                    existingImage.qaPairs.push(...qaPairs);
+                } else {
+                    // Image does not exist, create a new entry for the image
+                    existingDataSaver.data.push({
+                        image: imageData,
+                        qaPairs: qaPairs,
+                    });
+                }
+
+                const result = await existingDataSaver.save();
+                console.log('Appended datasaver item:', result);
+
+                res.status(200).json({ success: true, message: 'Data appended successfully' });
+            } else {
+                // User exists but does not have an entry in datasaver, create a new entry
+                const datasaverItem = new DatasaverModel({
+                    user: userId,
+                    data: [{
+                        image: imageData,
+                        qaPairs: qaPairs,
+                    }],
+                });
+
+                const result = await datasaverItem.save();
+                console.log('Saved datasaver item:', result);
+
+                res.status(200).json({ success: true, message: 'Data saved successfully' });
+            }
+        } else {
+            console.log("User not found");
+            res.status(404).json({ success: false, message: 'User not found' });
+        }
+    } catch (error) {
+        console.error('Error storing data:', error);
+        res.status(500).json({ success: false, message: 'Failed to store data' });
+    }
+};
+
+
 
 
 
@@ -273,5 +331,6 @@ module.exports = {
     getProfile,
     getotp,
     modeloutput,
-    imgupload
+    imgupload,
+    storeInfo
 };

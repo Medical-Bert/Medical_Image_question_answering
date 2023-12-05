@@ -8,10 +8,7 @@ import jsonData from '../data/total.json';
 import myImage from '../data/image2664.jpg';
 import myImage1 from '../data/image2665.jpg';
 import myImage2 from '../data/image2666.jpg';
-import myImage3 from '../data/image2667.jpg';
-import myImage4 from '../data/image2668.jpg';
-import myImage5 from '../data/image2669.jpg';
-import myImage6 from '../data/image2670.jpg';
+
 
 import axios from 'axios'
 
@@ -19,22 +16,32 @@ import axios from 'axios'
 
 const Suggestion = () => {
     const navigate = useNavigate();
-    const [uploadedFiles, setUploadedFiles] = useState([]);
-
+    const fileInputRef = useRef(null);
+    const [file, setFile] = useState(null);
     const [uploadedImage, setUploadedImage] = useState(null);
     const [imgpath, setImgpath] = useState(null);
     const [value, setValue] = useState("");
     const textAreaRef = useRef(null);
-
-
     const [imgFile, setImgFile] = useState(null);
+    const [modalContent, setModalContent] = useState([]);
+    const [data, setData] = useState([]);
+    const [storedUsername, setStoredUsername] = useState(null);
 
 
+
+    const handleFileUpload = (event) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            setFile(reader.result);
+        };
+        reader.readAsDataURL(fileInputRef.current.files[0]);
+    };
 
 
     const handleLogoutClick = () => {
         // Your existing logout logic
         localStorage.removeItem('jwt');
+        localStorage.removeItem('loggeduser');
         navigate('/login');
 
         toast.success('Logout Successful', {
@@ -50,13 +57,33 @@ const Suggestion = () => {
     };
 
 
-    const [modalContent, setModalContent] = useState([]);
-    const [data, setData] = useState([]);
+    
 
     useEffect(() => {
         setData(jsonData);
+        setStoredUsername(localStorage.getItem('loggeduser'))
     }, []);
 
+
+    
+   
+
+    const downloadImageToDevice = async (imageName) => {
+        try {
+            const response = await fetch(`../data/${imageName}.jpg`);
+            const blob = await response.blob();
+
+            // Create a download link
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${imageName}.jpg`;
+
+            // Trigger the download
+            link.click();
+        } catch (error) {
+            console.error('Error downloading image:', error);
+        }
+    };
 
 
 
@@ -159,7 +186,7 @@ const Suggestion = () => {
         console.log(imgFile.name);
 
         try {
-            const response = await axios.post('https://medicalbert-api.onrender.com/modeloutput', formData, {
+            const response = await axios.post('http://localhost:5000/modeloutput', formData, {
                 withCredentials: true,
                 headers: {
                     'Content-Type': 'multipart/form-data', // Important for file uploads
@@ -204,6 +231,82 @@ const Suggestion = () => {
         }
     };
 
+    const mongosaver = async () => {
+        try {
+            if (!imgFile) {
+                toast.error('No image uploaded. Upload an image first.', {
+                    position: 'bottom-right',
+                    autoClose: 1400,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: 'light',
+                });
+                return;
+            }
+    
+            const imageFile = imgFile;
+    
+            // Convert the image file to base64
+            const imageData = await getBase64(imageFile);
+    
+            // Get all questions and answers from qandaContent
+            const qandaData = qandaContent.map((content) => ({
+                question: content.props.children[0].props.children[1],
+                answer: content.props.children[1].props.children[1],
+            }));
+    
+            // Prepare data to be sent to the server
+            const requestData = {
+                userId: localStorage.getItem('loggeduser'), // Assuming userId is stored in local storage
+                imageData: imageData,
+                qandaData: qandaData,
+            };
+    
+            // Send the data to the server
+            const response = await axios.post('http://localhost:5000/storeInfo', requestData, {
+                withCredentials: true,
+            });
+    
+            toast.success('Data saved to Mongo successfully', {
+                position: 'bottom-right',
+                autoClose: 1400,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'light',
+            });
+    
+        } catch (error) {
+            console.error('Error saving data to Mongo:', error);
+            toast.error('Failed to save data to Mongo', {
+                position: 'bottom-right',
+                autoClose: 1400,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'light',
+            });
+        }
+    };
+    
+    // Function to convert file to base64
+    const getBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+        });
+    };
+    
+
 
     const handleChange = (e) => {
         setValue(e.target.value);
@@ -223,6 +326,8 @@ const Suggestion = () => {
         e.preventDefault();
         getans();
     };
+
+
 
     return (
         <div className="container-fluid">
@@ -267,30 +372,26 @@ const Suggestion = () => {
                         <p>Visual Question Answering</p>
                     </div>
                     <div className="mb-auto p-2">
-                        <button className="btn btn-secondary my-3 mx-2" style={{ display: 'flex', alignItems: 'center' }}>
+                        <button className="btn btn-secondary my-3 mx-2" style={{ display: 'flex', alignItems: 'center' }} onClick={() => downloadImageToDevice('image2664')}>
                             <img src={myImage} alt="My Image" style={{ width: '60px', height: '60px', marginRight: '10px' }} />
                             <p>Test sample 1</p>
                         </button>
-                        <button className="btn btn-secondary my-3 mx-2" style={{ display: 'flex', alignItems: 'center' }}>
+                        <button className="btn btn-secondary my-3 mx-2" style={{ display: 'flex', alignItems: 'center' }} onClick={() => downloadImageToDevice('image2665')}>
                             <img src={myImage1} alt="My Image" style={{ width: '60px', height: '60px', marginRight: '10px' }} />
                             <p>Test sample 2</p>
                         </button>
-                        <button className="btn btn-secondary my-3 mx-2" style={{ display: 'flex', alignItems: 'center' }}>
+                        <button className="btn btn-secondary my-3 mx-2" style={{ display: 'flex', alignItems: 'center' }} onClick={() => downloadImageToDevice('image2666')}>
                             <img src={myImage2} alt="My Image" style={{ width: '60px', height: '60px', marginRight: '10px' }} />
                             <p>Test sample 3</p>
                         </button>
-                        <button className="btn btn-secondary my-3 mx-2" style={{ display: 'flex', alignItems: 'center' }}>
-                            <img src={myImage3} alt="My Image" style={{ width: '60px', height: '60px', marginRight: '10px' }} />
-                            <p>Test sample 4</p>
-                        </button>
-                        <button className="btn btn-secondary my-3 mx-2" style={{ display: 'flex', alignItems: 'center' }}>
-                            <img src={myImage4} alt="My Image" style={{ width: '60px', height: '60px', marginRight: '10px' }} />
-                            <p>Test sample 5</p>
-                        </button>
+                        <p>..........Previously Saved .........</p>
+                        <hr />
+                        
                     </div>
                     <div className="my-5 mx-3">
-                        <div>
-                            <h4>Welcome user</h4>
+                        <div className='d-flex text-inline'>
+                            <h4>Welcome </h4>
+                            <h4 className='mx-2'>{storedUsername}</h4>
                         </div>
                         <div>
                             <button className="btn btn-secondary" onClick={handleLogoutClick}>
@@ -318,10 +419,11 @@ const Suggestion = () => {
                                         alt="Uploaded Image"
                                         className="hieght-and-width mx-2"
                                     />
-                                    <button className="btn btn-danger btn my-2 mx-3" data-bs-toggle="modal" data-bs-target="#example">
+                                    <button className="btn btn-info btn my-2 mx-3" data-bs-toggle="modal" data-bs-target="#example">
                                         Suggestions
                                     </button>
-                                    <button className='btn btn-danger my-2 mx-3' onClick={handleClearImage}>clear</button>
+                                    <button className='btn btn-primary my-2 mx-2' onClick={mongosaver}>save to mongo</button>
+                                    <button className='btn btn-danger my-2 mx-2' onClick={handleClearImage}>clear</button>
                                 </div>
                             )}
                         </div>
