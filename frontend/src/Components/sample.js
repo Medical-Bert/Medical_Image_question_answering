@@ -262,15 +262,16 @@ const Suggestion = () => {
         setValue(e.target.value);
     };
     const handleEnterPress = (e) => {
-        if (e.key === 'Enter' && value.trim() !== '') {
+        if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
-            getans();
-        }
-        else if(e.key==="Enter" && e.shiftKey)
-        {
+            if (value.trim() !== '') {
+                getans();
+            }
+        } else if (e.key === 'Enter' && e.shiftKey) {
             setValue((prevValue) => prevValue + '\n');
         }
     };
+    
 
 
     const handleClearImage = () => {
@@ -283,26 +284,24 @@ const Suggestion = () => {
     };
 
     const handleSubmit = (e) => {
-        if(value.trim()!=='')
-        {
+        if (value.trim() !== '') {
             e.preventDefault();
-            getans();
-        }
-        if(value.trim!=='' && model==='')
-        {
-            toast.success('Select The model', {
-                position: 'bottom-right',
-                autoClose: 1400,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: 'light',
-            });
-        }
-        else{
-            toast.success('Enter the question in the field', {
+            if (model === '') {
+                toast.error('Select The model', {
+                    position: 'bottom-right',
+                    autoClose: 1400,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: 'light',
+                });
+            } else {
+                getans();
+            }
+        } else {
+            toast.error('Enter the question in the field', {
                 position: 'bottom-right',
                 autoClose: 1400,
                 hideProgressBar: false,
@@ -314,6 +313,7 @@ const Suggestion = () => {
             });
         }
     };
+    
 
     const onlineImages = () => {
         const url1 = "https://drive.google.com/file/d/1PBZ35aP0V66dzHqD8BrvmvI-T-_OufVu/view"
