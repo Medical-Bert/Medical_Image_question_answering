@@ -61,29 +61,6 @@ const Suggestion = () => {
     }, []);
 
 
-
-
-
-    const downloadImageToDevice = async (imageName) => {
-        try {
-            const response = await fetch(`../data/${imageName}.jpg`);
-            const blob = await response.blob();
-
-            // Create a download link
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `${imageName}.jpg`;
-
-            // Trigger the download
-            link.click();
-        } catch (error) {
-            console.error('Error downloading image:', error);
-        }
-    };
-
-
-
-
     const handleImageUpload = async (e) => {
         const file = e.target.files[0];
 
@@ -339,17 +316,8 @@ const Suggestion = () => {
                         <p>Visual Question Answering</p>
                     </div>
                     <div className="mb-auto p-2">
-                        <button className="btn btn-secondary my-3 mx-2" style={{ display: 'flex', alignItems: 'center' }} onClick={() => downloadImageToDevice('image2664')}>
-                            <img src={myImage} alt="My Image" style={{ width: '60px', height: '60px', marginRight: '10px' }} />
-                            <p>Test sample 1</p>
-                        </button>
-                        <button className="btn btn-secondary my-3 mx-2" style={{ display: 'flex', alignItems: 'center' }} onClick={() => downloadImageToDevice('image2665')}>
-                            <img src={myImage1} alt="My Image" style={{ width: '60px', height: '60px', marginRight: '10px' }} />
-                            <p>Test sample 2</p>
-                        </button>
-                        <button className="btn btn-secondary my-3 mx-2" style={{ display: 'flex', alignItems: 'center' }} onClick={() => downloadImageToDevice('image2666')}>
-                            <img src={myImage2} alt="My Image" style={{ width: '60px', height: '60px', marginRight: '10px' }} />
-                            <p>Test sample 3</p>
+                        <button className="btn btn-secondary my-3 mx-2" style={{ display: 'flex', alignItems: 'center' }}>
+                            <p>Choose sample images</p>
                         </button>
                         <p>..........Previously Saved .........</p>
                         <hr />
