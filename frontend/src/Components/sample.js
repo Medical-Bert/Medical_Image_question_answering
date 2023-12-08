@@ -312,28 +312,70 @@ const Suggestion = () => {
         }
     };
 
+    const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+
+    // Function to handle image button click
+    const handleImageButtonClick = (index) => {
+        setSelectedImageIndex(index);
+    };
+
+    const handleUploadImageLink = async (imageLink) => {
+        try {
+            const response = await fetch(imageLink);
+            if (!response.ok) {
+                throw new Error('Failed to fetch image');
+            }
+    
+            const blob = await response.blob();
+            const reader = new FileReader();
+    
+            reader.onloadend = () => {
+                const base64Data = reader.result.split(',')[1];
+                console.log('Base64 Data:', base64Data); // Log the base64 data to the console
+    
+                const file = new File([blob], 'image_from_link.jpg', { type: 'image/jpeg' });
+                setImgFile(file);
+                setUploadedImage(`data:image/jpeg;base64, ${base64Data}`);
+            };
+    
+            reader.readAsDataURL(blob);
+        } catch (error) {
+            console.error('Error fetching or converting image:', error);
+        }
+    };
+    
 
     const [testimages, setTestimages] = useState(null);
 
     useEffect(() => {
-        const url1 = "https://drive.google.com/file/d/1PBZ35aP0V66dzHqD8BrvmvI-T-_OufVu/view";
-        const url2 = "https://drive.google.com/file/d/15Ng5mK03pnwjGB1DxMUz1Z6X_JdtDPRZ/view?usp=sharing";
-        const url3 = "https://drive.google.com/file/d/1ZZpnL4b24FawOVKgot-a5HSjNA7fHHFJ/view?usp=sharing";
-        const url4 = "https://drive.google.com/file/d/1PBZ35aP0V66dzHqD8BrvmvI-T-_OufVu/view";
-        const url5 = "https://drive.google.com/file/d/1RWbl-C5_bqwwzKDgYyVa2148ozQgJQzg/view?usp=sharing";
-
         const getimgfiles = (
             <div>
-                <img src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350"></img>
-                <div style={{ backgroundColor: '#347238', padding: '8px' }}>
-                    <img src="https://drive.google.com/file/d/1PBZ35aP0V66dzHqD8BrvmvI-T-_OufVu/view?usp=sharing" alt="image1" style={{ width: '120px', height: '150px' }} />
-                    <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwallpapers.com%2Fvirat-kohli-pictures&psig=AOvVaw1t9CrHcLtQPpe-HOeUWfFi&ust=1702119517006000&source=images&cd=vfe&ved=0CBIQjRxqFwoTCOjQnbvX_4IDFQAAAAAdAAAAABAE " alt="image2" style={{ width: '120px', height: '150px' }} />
-                    <img src={url3} alt="image3" style={{ width: '120px', height: '150px' }} />
+                <div >
+                    <button className='mx-2'>
+                        <img src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350" alt="image1" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} />
+                    </button>
+                    <button className='mx-2'>
+                        <img src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350" alt="image1" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} />
+                    </button>
+                    <button className='mx-2'>
+                        <img src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350" alt="image1" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} />
+                    </button>
+
                 </div>
                 <br />
-                <div style={{ backgroundColor: '#348249', padding: '8px' }}>
-                    <img src={url4} alt="image4" style={{ width: '120px', height: '150px' }} />
-                    <img src={url5} alt="image5" style={{ width: '120px', height: '150px' }} />
+                <div >
+                    <button className='mx-2'>
+                        <img src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350" alt="image1" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} />
+                    </button>
+                    <button className='mx-2'>
+                        <img src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350" alt="image1" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} />
+                    </button>
+                    <button className='mx-2'>
+                        <img src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350" alt="image1" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} />
+                    </button>
+
+
+
                 </div>
                 <br />
             </div>
@@ -371,8 +413,11 @@ const Suggestion = () => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body d-flex justify-content-center">
-                            <p>helo world</p>
+                            {testimages}
                         </div>
+                        <button className='btn btn-primary btn-lg' onClick={() => handleUploadImageLink("https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350")}>
+                            uploadimagelink
+                        </button>
                     </div>
                 </div>
             </div>
