@@ -262,9 +262,25 @@ const Suggestion = () => {
         setValue(e.target.value);
     };
     const handleEnterPress = (e) => {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && value.trim() !== '') {
             e.preventDefault();
             getans();
+        }
+        else if(e.key==="Enter" && e.shiftKey)
+        {
+            setValue((prevValue) => prevValue + '\n');
+        }
+        else{
+            toast.success('Enter any question in the field', {
+                position: 'bottom-right',
+                autoClose: 1400,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'light',
+            });
         }
     };
 
