@@ -266,8 +266,7 @@ const Suggestion = () => {
             e.preventDefault();
             getans();
         }
-        else if(e.key==="Enter" && e.shiftKey)
-        {
+        else if (e.key === "Enter" && e.shiftKey) {
             setValue((prevValue) => prevValue + '\n');
         }
     };
@@ -283,13 +282,11 @@ const Suggestion = () => {
     };
 
     const handleSubmit = (e) => {
-        if(value.trim()!=='')
-        {
+        if (value.trim() !== '') {
             e.preventDefault();
             getans();
         }
-        if(value.trim!=='' && modelNames==='')
-        {
+        if (value.trim !== '' && model === '') {
             toast.success('Select The model', {
                 position: 'bottom-right',
                 autoClose: 1400,
@@ -301,7 +298,7 @@ const Suggestion = () => {
                 theme: 'light',
             });
         }
-        else{
+        else {
             toast.success('Enter the question in the field', {
                 position: 'bottom-right',
                 autoClose: 1400,
@@ -315,12 +312,8 @@ const Suggestion = () => {
         }
     };
 
-    const onlineImages = () => {
-        const url = "https://drive.google.com/file/d/1PBZ35aP0V66dzHqD8BrvmvI-T-_OufVu/view"
 
-
-
-    
+    const [testimages, setTestimages] = useState(null);
 
     useEffect(() => {
         const url1 = "https://drive.google.com/file/d/1PBZ35aP0V66dzHqD8BrvmvI-T-_OufVu/view";
@@ -333,8 +326,8 @@ const Suggestion = () => {
             <div>
                 <img src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350"></img>
                 <div style={{ backgroundColor: '#347238', padding: '8px' }}>
-                    <img src="https://drive.google.com/file/d/1PBZ35aP0V66dzHqD8BrvmvI-T-_OufVu/view" alt="image1" style={{ width: '120px', height: '150px' }} />
-                    <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwallpapers.com%2Fvirat-kohli-pictures&psig=AOvVaw1t9CrHcLtQPpe-HOeUWfFi&ust=1702119517006000&source=images&cd=vfe&ved=0CBIQjRxqFwoTCOjQnbvX_4IDFQAAAAAdAAAAABAE "alt="image2" style={{ width: '120px', height: '150px' }} />
+                    <img src="https://drive.google.com/file/d/1PBZ35aP0V66dzHqD8BrvmvI-T-_OufVu/view?usp=sharing" alt="image1" style={{ width: '120px', height: '150px' }} />
+                    <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwallpapers.com%2Fvirat-kohli-pictures&psig=AOvVaw1t9CrHcLtQPpe-HOeUWfFi&ust=1702119517006000&source=images&cd=vfe&ved=0CBIQjRxqFwoTCOjQnbvX_4IDFQAAAAAdAAAAABAE " alt="image2" style={{ width: '120px', height: '150px' }} />
                     <img src={url3} alt="image3" style={{ width: '120px', height: '150px' }} />
                 </div>
                 <br />
@@ -474,7 +467,7 @@ const Suggestion = () => {
                                 <div className='d-flex text-inline'>
                                     <textarea
                                         onChange={handleChange}
-                                        onKeyDown={handleEnterPress} 
+                                        onKeyDown={handleEnterPress}
                                         placeholder="Ask any question related to the image:"
                                         ref={textAreaRef}
                                         rows={4}
