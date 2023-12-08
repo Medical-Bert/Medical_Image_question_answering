@@ -144,6 +144,9 @@ const Suggestion = () => {
     const [qandaContent, setQandaContent] = useState([]);
 
 
+
+
+
     const getans = async () => {
         const question = value;
         console.log(value);
@@ -263,7 +266,8 @@ const Suggestion = () => {
             e.preventDefault();
             getans();
         }
-        else if (e.key === "Enter" && e.shiftKey) {
+        else if(e.key==="Enter" && e.shiftKey)
+        {
             setValue((prevValue) => prevValue + '\n');
         }
     };
@@ -279,11 +283,13 @@ const Suggestion = () => {
     };
 
     const handleSubmit = (e) => {
-        if (value.trim() !== '') {
+        if(value.trim()!=='')
+        {
             e.preventDefault();
             getans();
         }
-        if (value.trim !== '' && model === '') {
+        if(value.trim!=='' && modelNames==='')
+        {
             toast.success('Select The model', {
                 position: 'bottom-right',
                 autoClose: 1400,
@@ -295,7 +301,7 @@ const Suggestion = () => {
                 theme: 'light',
             });
         }
-        else {
+        else{
             toast.success('Enter the question in the field', {
                 position: 'bottom-right',
                 autoClose: 1400,
@@ -309,7 +315,8 @@ const Suggestion = () => {
         }
     };
 
-    const [testimages, setTestimages] = useState(null);
+    const onlineImages = () => {
+        const url = "https://drive.google.com/file/d/1PBZ35aP0V66dzHqD8BrvmvI-T-_OufVu/view"
 
 
 
@@ -372,7 +379,6 @@ const Suggestion = () => {
                         </div>
                         <div className="modal-body d-flex justify-content-center">
                             <p>helo world</p>
-                            {testimages}
                         </div>
                     </div>
                 </div>
@@ -468,7 +474,7 @@ const Suggestion = () => {
                                 <div className='d-flex text-inline'>
                                     <textarea
                                         onChange={handleChange}
-                                        onKeyDown={handleEnterPress}
+                                        onKeyDown={handleEnterPress} 
                                         placeholder="Ask any question related to the image:"
                                         ref={textAreaRef}
                                         rows={4}
