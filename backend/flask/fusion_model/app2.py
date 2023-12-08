@@ -53,22 +53,70 @@ def process_example(example):
 dataset = dataset.map(process_example, batched=True)
 
 
-# device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-# print(device)
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print(device)
 
-# if device.type == 'cuda':
-#     print("my gpu is rtx ok??",torch.cuda.get_device_name(0))
+if device.type == 'cuda':
+    print("my gpu is rtx ok??",torch.cuda.get_device_name(0))
     
 
 
-@dataclass
-class MultimodalCollator:
-    tokenizer: AutoTokenizer
-    preprocessor: AutoFeatureExtractor
+# @dataclass
+# class MultimodalCollator:
+#     tokenizer: AutoTokenizer
+#     preprocessor: AutoFeatureExtractor
 
-    def tokenize_text(self, texts: List[str]):
-        encoded_text = self.tokenizer(
-            text=texts,
+#     def tokenize_text(self, texts: List[str]):
+#         encoded_text = self.tokenizer(
+#             text=texts,
+#             padding='longest',
+#             max_length=24,
+#             truncation=True,
+#             return_tensors='pt',
+#             return_token_type_ids=True,
+#             return_attention_mask=True,
+#         )
+#         return {
+#             "input_ids": encoded_text['input_ids'].squeeze(),
+#             "token_type_ids": encoded_text['token_type_ids'].squeeze(),
+#             "attention_mask": encoded_text['attention_mask'].squeeze(),
+#         }
+
+#     def preprocess_images(self, images: List[str]):
+#         processed_images = self.preprocessor(
+#             images=[Image.open(os.path.join("..", r"C:\Users\Vishnu\Documents\Gitprojects\ps\pathvqa\train",   image_id + ".jpg")).convert('RGB') for image_id in images],
+#             return_tensors="pt",
+#         )
+#         return {
+#             "pixel_values": processed_images['pixel_values'].squeeze(),
+#         }
+
+#     def __call__(self, raw_batch_dict):
+#         return {
+#             **self.tokenize_text(
+#                 raw_batch_dict['question']
+#                 if isinstance(raw_batch_dict, dict) else
+#                 [i['question'] for i in raw_batch_dict]
+#             ),
+#             **self.preprocess_images(
+#                 raw_batch_dict['image']
+#                 if isinstance(raw_batch_dict, dict) else
+#                 [i['image'] for i in raw_batch_dict]
+#             ),
+#             'labels': torch.tensor(
+#                 raw_batch_dict['label']
+#                 if isinstance(raw_batch_dict, dict) else
+#                 [i['label'] for i in raw_batch_dict],
+#                 dtype=torch.int64
+#             ),
+#         }
+text='bert-base-uncased'
+image='google/vit-base-patch16-224-in21k'
+tokenizer = AutoTokenizer.from_pretrained(text)
+preprocessor = AutoFeatureExtractor.from_pretrained(image)
+def getFeatures(img,question):
+    encoded_text = tokenizer(
+            text=question,
             padding='longest',
             max_length=24,
             truncation=True,
@@ -76,41 +124,15 @@ class MultimodalCollator:
             return_token_type_ids=True,
             return_attention_mask=True,
         )
-        return {
-            "input_ids": encoded_text['input_ids'].squeeze(),
-            "token_type_ids": encoded_text['token_type_ids'].squeeze(),
-            "attention_mask": encoded_text['attention_mask'].squeeze(),
-        }
-
-    def preprocess_images(self, images: List[str]):
-        processed_images = self.preprocessor(
-            images=[Image.open(os.path.join("..", r"C:\Users\Vishnu\Documents\Gitprojects\ps\pathvqa\train",   image_id + ".jpg")).convert('RGB') for image_id in images],
-            return_tensors="pt",
-        )
-        return {
-            "pixel_values": processed_images['pixel_values'].squeeze(),
-        }
-
-    def __call__(self, raw_batch_dict):
-        return {
-            **self.tokenize_text(
-                raw_batch_dict['question']
-                if isinstance(raw_batch_dict, dict) else
-                [i['question'] for i in raw_batch_dict]
-            ),
-            **self.preprocess_images(
-                raw_batch_dict['image']
-                if isinstance(raw_batch_dict, dict) else
-                [i['image'] for i in raw_batch_dict]
-            ),
-            'labels': torch.tensor(
-                raw_batch_dict['label']
-                if isinstance(raw_batch_dict, dict) else
-                [i['label'] for i in raw_batch_dict],
-                dtype=torch.int64
-            ),
-        }
-          
+    processed_images = preprocessor(
+        images=Image.open(img).convert('RGB') ,
+        return_tensors="pt")
+    return {
+        "input_ids": encoded_text['input_ids'],
+        "token_type_ids": encoded_text['token_type_ids'],
+        "attention_mask": encoded_text['attention_mask'],
+        "pixel_values": processed_images['pixel_values']
+    }
 class MultimodalVQAModel(nn.Module):
     def __init__(
             self,
@@ -178,6 +200,18 @@ class MultimodalVQAModel(nn.Module):
             
         return out
 
+# def createMultimodalVQACollatorAndModel(text='bert-base-uncased', image='google/vit-base-patch16-224-in21k'):
+#     tokenizer = AutoTokenizer.from_pretrained(text)
+#     preprocessor = AutoFeatureExtractor.from_pretrained(image)
+
+#     multi_collator = MultimodalCollator(
+#         tokenizer=tokenizer,
+#         preprocessor=preprocessor,
+#     )
+
+
+#     multi_model = MultimodalVQAModel(pretrained_text_name=text, pretrained_image_name=image).to(device)
+#     return multi_collator, multi_model
 
 args = TrainingArguments(
     output_dir="checkpoint",
@@ -206,9 +240,9 @@ args = TrainingArguments(
 
 
 
-with open(r"C:\Users\Vishnu\Documents\Gitprojects\ps\pathvqa\modelcol.pkl", 'rb') as file:
-    loaded_collator, loaded_model = pickle.load(file)
-    loaded_model.to('cpu') 
+with open(r"C:\Users\Vishnu\Documents\Gitprojects\ps\pathvqa\FusionModel.pkl", 'rb') as file:
+    loaded_model = pickle.load(file)
+    loaded_model.to(device) 
 
 
 
@@ -268,27 +302,31 @@ def predict():
         
         
         user_input = [
-            {'image': actual_image, 'question': question, 'answer': 'yes', 'label': 121},
             {'image': actual_image, 'question': question, 'answer': 'yes', 'label': 143},
             {'image': actual_image, 'question': question, 'answer': 'yes', 'label': 239},
+            {'image': actual_image, 'question': question, 'answer': 'yes', 'label': 121}
         ]
 
-        preps = user_input[0:2]  # Adjust the range based on how many elements you want to include
-
-
+        preps = user_input  # Adjust the range based on how many elements you want to include
         print(dataset["test"][3246])
+        print("hello baaka...")
+        preps2=dataset["test"][3246]
+        print(dataset["test"][3246:3249])
         # preps = dataset["test"][100:102]
+        samples=getFeatures(actual_image,question)
+        print("these are: ",samples)
 
         print("hell 1")
-        samples = loaded_collator(preps)
-
+        # samples = loaded_collator(preps)
+        # print(samples)
         print("hell 2")
-
+        # samples2 = loaded_collator(preps2)
+        # print(samples2)
         # Extract processed data from the collated samples
-        input_ids = samples["input_ids"].to('cpu')
-        token_type_ids = samples["token_type_ids"].to('cpu')
-        attention_mask = samples["attention_mask"].to('cpu')
-        pixel_values = samples["pixel_values"].to('cpu')
+        input_ids = samples["input_ids"].to(device)
+        token_type_ids = samples["token_type_ids"].to(device)
+        attention_mask = samples["attention_mask"].to(device)
+        pixel_values = samples["pixel_values"].to(device)
 
         print("hell 4")
         loaded_output = loaded_model(input_ids, pixel_values, attention_mask, token_type_ids)

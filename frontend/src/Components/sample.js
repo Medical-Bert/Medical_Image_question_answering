@@ -27,15 +27,10 @@ const Suggestion = () => {
     const [data, setData] = useState([]);
     const [storedUsername, setStoredUsername] = useState(null);
 
+    const [storedQandA, setStoredQandA] = useState([]);
 
 
-    const handleFileUpload = (event) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-            setFile(reader.result);
-        };
-        reader.readAsDataURL(fileInputRef.current.files[0]);
-    };
+
 
 
     const handleLogoutClick = () => {
@@ -216,6 +211,13 @@ const Suggestion = () => {
                 </>
             ];
 
+            const newQandA = {
+                question: value,
+                answer: response.data.prediction,
+            };
+    
+            setStoredQandA((prevQandA) => [...prevQandA, newQandA]);
+
             setQandaContent((prevContent) => [...prevContent, ...newContent]);
 
             // Clear the input field
@@ -231,42 +233,22 @@ const Suggestion = () => {
         }
     };
 
+    
+
     const mongosaver = async () => {
         try {
             if (!imgFile) {
-                toast.error('No image uploaded. Upload an image first.', {
-                    position: 'bottom-right',
-                    autoClose: 1400,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: 'light',
-                });
+                // Handle error as before
                 return;
             }
     
-            const imageFile = imgFile;
-    
-            // Convert the image file to base64
-            const imageData = await getBase64(imageFile);
-    
-            // Get all questions and answers from qandaContent
-            const qandaData = qandaContent.map((content) => ({
-                question: content.props.children[0].props.children[1],
-                answer: content.props.children[1].props.children[1],
-            }));
-    
-            // Prepare data to be sent to the server
-            const requestData = {
-                userId: localStorage.getItem('loggeduser'), // Assuming userId is stored in local storage
-                imageData: imageData,
-                qandaData: qandaData,
-            };
-    
-            // Send the data to the server
-            const response = await axios.post('http://localhost:5000/storeInfo', requestData, {
+            const imageName = imgFile.name.split('.').slice(0, -1).join('');
+            const response = await axios.post('http://localhost:5000/storeInfo',  {
+                params: {
+                    userName: localStorage.getItem('loggeduser'),
+                    imageData: imageName,
+                    qaPairs: storedQandA,
+                },
                 withCredentials: true,
             });
     
@@ -282,28 +264,8 @@ const Suggestion = () => {
             });
     
         } catch (error) {
-            console.error('Error saving data to Mongo:', error);
-            toast.error('Failed to save data to Mongo', {
-                position: 'bottom-right',
-                autoClose: 1400,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: 'light',
-            });
+            // Handle error as before
         }
-    };
-    
-    // Function to convert file to base64
-    const getBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = (error) => reject(error);
-        });
     };
     
 
@@ -320,6 +282,7 @@ const Suggestion = () => {
         setUploadedImage(null);
         setImgFile(null);
         setValue("");
+        setStoredQandA([]);
     };
 
     const handleSubmit = (e) => {

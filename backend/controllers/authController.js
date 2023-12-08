@@ -17,53 +17,65 @@ const multer = require('multer');
 const { application } = require('express');
 
 
+
 const storeInfo = async (req, res) => {
     try {
-        const { userId, imageData, qaPairs } = req.body;
+        const { userName, imageData, qaPairs } = req.body.params;
+        
+        console.log(req.query)
+        console.log(req.body)
+        console.log(req.body.params)
 
-        const user = await UserModel.findOne({ _id: userId });
+        if (!userName || !imageData || !qaPairs) {
+            // Check if required fields are missing
+            return res.status(400).json({ success: false, message: 'Missing required fields' });
+        }
 
-        if (user) {
-            // Check if the user already has an entry in the datasaver model
-            const existingDataSaver = await DatasaverModel.findOne({ user: userId });
+        // Find the user by userName
+        let user = await DatasaverModel.findOne({ userName: userName });
+
+        if (!user) {
+            // If the user does not exist, create a new entry for the user
+            user = new DatasaverModel({
+                userName: userName,
+                data: [{
+                    image: imageData,
+                    qaPairs: qaPairs,
+                }],
+            });
+
+            const result = await user.save();
+            console.log('Saved datasaver item:', result);
+
+            res.status(200).json({ success: true, message: 'Data saved successfully' });
+        } else {
+            // Find the existing datasaver item for the user and image
+            const existingDataSaver = await DatasaverModel.findOne({
+                _id: user._id,
+                'data.image': imageData, // Check for the image in the 'data' array
+            });
 
             if (existingDataSaver) {
-                // User exists, check if the image already exists
+                // Image exists, append the new question and answers
                 const existingImage = existingDataSaver.data.find(item => item.image === imageData);
-
-                if (existingImage) {
-                    // Image exists, append the new question and answers
-                    existingImage.qaPairs.push(...qaPairs);
-                } else {
-                    // Image does not exist, create a new entry for the image
-                    existingDataSaver.data.push({
-                        image: imageData,
-                        qaPairs: qaPairs,
-                    });
-                }
+                existingImage.qaPairs.push(...qaPairs);
 
                 const result = await existingDataSaver.save();
                 console.log('Appended datasaver item:', result);
 
                 res.status(200).json({ success: true, message: 'Data appended successfully' });
             } else {
-                // User exists but does not have an entry in datasaver, create a new entry
-                const datasaverItem = new DatasaverModel({
-                    user: userId,
-                    data: [{
-                        image: imageData,
-                        qaPairs: qaPairs,
-                    }],
+                // Image does not exist, create a new entry for the image
+                user.data.push({
+                    image: imageData,
+                    qaPairs: qaPairs,
                 });
 
-                const result = await datasaverItem.save();
+                const result = await user.save();
                 console.log('Saved datasaver item:', result);
 
                 res.status(200).json({ success: true, message: 'Data saved successfully' });
             }
-        } else {
-            console.log("User not found");
-            res.status(404).json({ success: false, message: 'User not found' });
         }
     } catch (error) {
         console.error('Error storing data:', error);
@@ -268,12 +280,12 @@ const fs = require('fs').promises; // Using fs.promises for asynchronous file op
 //         });
 
 //         console.log('Predicted value:', response.data.prediction);
-        
+
 //         // Send the prediction as JSON in the HTTP response
 //         res.json(response.data);
 //     } catch (error) {
 //         console.error('Error:', error.message);
-        
+
 //         // Send a 500 Internal Server Error response with the error message
 //         res.status(500).json({ error: error.message });
 //     }
@@ -304,19 +316,19 @@ const modeloutput = async (req, res) => {
         };
 
         // Assuming axios is properly imported in your actual code
-        const response = await axios.post('http://127.0.0.1:8000/predict', input_data, {
+        const response = await axios.post('https://16.171.52.38:80/predict', input_data, {
             headers: {
                 'Content-Type': 'application/json',
             },
         });
 
         console.log('Predicted value:', response.data.prediction);
-        
+
         // Send the prediction as JSON in the HTTP response
         res.json(response.data);
     } catch (error) {
         console.error('Error:', error.message);
-        
+
         // Send a 500 Internal Server Error response with the error message
         res.status(500).json({ error: error.message });
     }

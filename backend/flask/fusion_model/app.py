@@ -280,15 +280,16 @@ def predict():
         
         
         user_input = [
-            {'image': actual_image, 'question': question, 'answer': 'yes', 'label': 121},
             {'image': actual_image, 'question': question, 'answer': 'yes', 'label': 143},
             {'image': actual_image, 'question': question, 'answer': 'yes', 'label': 239},
+            {'image': actual_image, 'question': question, 'answer': 'yes', 'label': 121}
         ]
 
-        preps = user_input[0:2]  # Adjust the range based on how many elements you want to include
-
-
+        preps = user_input  # Adjust the range based on how many elements you want to include
         print(dataset["test"][3246])
+        print("hello baaka...")
+        
+        print(dataset["test"][3246:3249])
         # preps = dataset["test"][100:102]
 
         print("hell 1")
