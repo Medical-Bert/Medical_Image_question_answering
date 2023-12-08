@@ -261,7 +261,12 @@ const Suggestion = () => {
     const handleChange = (e) => {
         setValue(e.target.value);
     };
-
+    const handleEnterPress = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            getans();
+        }
+    };
 
 
     const handleClearImage = () => {
@@ -391,6 +396,7 @@ const Suggestion = () => {
                                 <div className='d-flex text-inline'>
                                     <textarea
                                         onChange={handleChange}
+                                        onKeyDown={handleEnterPress} 
                                         placeholder="Ask any question related to the image:"
                                         ref={textAreaRef}
                                         rows={4}
