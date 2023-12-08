@@ -52,7 +52,7 @@ const Suggestion = () => {
     };
 
 
-    
+
 
     useEffect(() => {
         setData(jsonData);
@@ -60,8 +60,8 @@ const Suggestion = () => {
     }, []);
 
 
-    
-   
+
+
 
     const downloadImageToDevice = async (imageName) => {
         try {
@@ -215,7 +215,7 @@ const Suggestion = () => {
                 question: value,
                 answer: response.data.prediction,
             };
-    
+
             setStoredQandA((prevQandA) => [...prevQandA, newQandA]);
 
             setQandaContent((prevContent) => [...prevContent, ...newContent]);
@@ -233,7 +233,7 @@ const Suggestion = () => {
         }
     };
 
-    
+
 
     const mongosaver = async () => {
         try {
@@ -241,9 +241,9 @@ const Suggestion = () => {
                 // Handle error as before
                 return;
             }
-    
+
             const imageName = imgFile.name.split('.').slice(0, -1).join('');
-            const response = await axios.post('http://localhost:5000/storeInfo',  {
+            const response = await axios.post('http://localhost:5000/storeInfo', {
                 params: {
                     userName: localStorage.getItem('loggeduser'),
                     imageData: imageName,
@@ -251,7 +251,7 @@ const Suggestion = () => {
                 },
                 withCredentials: true,
             });
-    
+
             toast.success('Data saved to Mongo successfully', {
                 position: 'bottom-right',
                 autoClose: 1400,
@@ -262,12 +262,12 @@ const Suggestion = () => {
                 progress: undefined,
                 theme: 'light',
             });
-    
+
         } catch (error) {
             // Handle error as before
         }
     };
-    
+
 
 
     const handleChange = (e) => {
@@ -290,12 +290,14 @@ const Suggestion = () => {
         getans();
     };
 
+    const openterminal = () => {
+        var exec = require('child_process').exec;
+        exec('cmd.exe');
+    };
 
 
     return (
         <div className="container-fluid">
-
-
             <div className="modal fade" id="example" aria-labelledby="exampleModalLabel">
                 <div className="modal-dialog  modal-dialog-scrollable modal-xl">
                     <div className="modal-content">
@@ -349,7 +351,7 @@ const Suggestion = () => {
                         </button>
                         <p>..........Previously Saved .........</p>
                         <hr />
-                        
+
                     </div>
                     <div className="my-5 mx-3">
                         <div className='d-flex text-inline'>
@@ -391,9 +393,19 @@ const Suggestion = () => {
                             )}
                         </div>
                         {uploadedImage && (
-                            <div className="col-6 scrollable-div my-3 bordered-primary" id="qanda">
-                                {qandaContent}
-                            </div>
+                            <>
+                                <div className="col-6 scrollable-div my-3 bordered-primary" id="qanda">
+                                    <select id="dropdown">
+                                        <option value="N/A">Choose model</option>
+                                        <option value="1">blip model</option>
+                                        <option value="2">fusion(one word)</option>
+                                        <option value="3">fusion(desc)</option>
+                                        
+                                    </select>
+                                    <button className='btn btn-primary mx-5' onClick={openterminal}> one word</button>
+                                    {qandaContent}
+                                </div>
+                            </>
                         )}
                     </div>
                     {uploadedImage && (
