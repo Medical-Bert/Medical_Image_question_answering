@@ -351,27 +351,27 @@ const Suggestion = () => {
         const getimgfiles = (
             <div>
                 <div >
-                    <button className='mx-2'>
-                        <img src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350" alt="image1" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} />
+                    <button className='mx-2 p-2'>
+                        <img src="https://i.imgur.com/09CjS4u.jpeg" alt="image1" name="image5" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }}onClick={() => handleUploadImageLink("https://i.imgur.com/09CjS4u.jpeg")} />
                     </button>
-                    <button className='mx-2'>
-                        <img src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350" alt="image1" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} />
+                    <button className='mx-2 p-2'>
+                        <img src="https://i.imgur.com/AGlC66n.jpeg" alt="image1" name="image2030" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }}onClick={() => handleUploadImageLink("https://i.imgur.com/AGlC66n.jpeg")} />
                     </button>
-                    <button className='mx-2'>
-                        <img src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350" alt="image1" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} />
+                    <button className='mx-2 p-2'>
+                        <img src="https://i.imgur.com/rizu3XV.jpeg" alt="image1" name="image2239" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} onClick={() => handleUploadImageLink("https://i.imgur.com/rizu3XV.jpeg")}/>
                     </button>
 
                 </div>
                 <br />
                 <div >
-                    <button className='mx-2'>
-                        <img src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350" alt="image1" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} />
+                    <button className='mx-2 p-2'>
+                        <img src="https://i.imgur.com/ckfg8Ut.jpeg" alt="image1" name="image3089" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} onClick={() => handleUploadImageLink("https://i.imgur.com/ckfg8Ut.jpeg")}/>
                     </button>
-                    <button className='mx-2'>
-                        <img src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350" alt="image1" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} />
+                    <button className='mx-2 p-2'>
+                        <img src="https://i.imgur.com/XdPusYo.jpeg" alt="image1" name="image381" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} onClick={() => handleUploadImageLink("https://i.imgur.com/XdPusYo.jpeg")} />
                     </button>
-                    <button className='mx-2'>
-                        <img src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350" alt="image1" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} />
+                    <button className='mx-2 p-2'>
+                        <img src="https://i.imgur.com/HvpCJD4.jpeg" alt="image1" name="image2865" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} onClick={() => handleUploadImageLink("https://i.imgur.com/HvpCJD4.jpeg")}/>
                     </button>
 
 
@@ -404,7 +404,7 @@ const Suggestion = () => {
             </div>
 
             <div className="modal fade" id="example1" aria-labelledby="exampleModalLabel">
-                <div className="modal-dialog  modal-dialog-scrollable modal-xl">
+                <div className="modal-dialog  modal-dialog-scrollable modal-lg">
                     <div className="modal-content">
                         <div className="modal-header">
                             <h1 className="modal-title fs-5" id="exampleModalLabel">
@@ -415,7 +415,7 @@ const Suggestion = () => {
                         <div className="modal-body d-flex justify-content-center">
                             {testimages}
                         </div>
-                        <button className='btn btn-primary btn-lg' onClick={() => handleUploadImageLink("https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350")}>
+                        <button className='btn btn-primary btn-lg' onClick={() => handleUploadImageLink("https://i.imgur.com/09CjS4u.jpeg")}>
                             uploadimagelink
                         </button>
                     </div>
