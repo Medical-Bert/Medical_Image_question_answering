@@ -270,18 +270,6 @@ const Suggestion = () => {
         {
             setValue((prevValue) => prevValue + '\n');
         }
-        else{
-            toast.success('Enter any question in the field', {
-                position: 'bottom-right',
-                autoClose: 1400,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: 'light',
-            });
-        }
     };
 
 
@@ -300,7 +288,11 @@ const Suggestion = () => {
     };
 
     const onlineImages = () => {
-        const url = "https://drive.google.com/file/d/1PBZ35aP0V66dzHqD8BrvmvI-T-_OufVu/view"
+        const url1 = "https://drive.google.com/file/d/1PBZ35aP0V66dzHqD8BrvmvI-T-_OufVu/view"
+        const url2 = "https://drive.google.com/file/d/15Ng5mK03pnwjGB1DxMUz1Z6X_JdtDPRZ/view?usp=sharing"
+        const url3 = "https://drive.google.com/file/d/1ZZpnL4b24FawOVKgot-a5HSjNA7fHHFJ/view?usp=sharing"
+        const url4= "https://drive.google.com/file/d/1PBZ35aP0V66dzHqD8BrvmvI-T-_OufVu/view"
+        const url5= "https://drive.google.com/file/d/1RWbl-C5_bqwwzKDgYyVa2148ozQgJQzg/view?usp=sharing"
 
     };
 
