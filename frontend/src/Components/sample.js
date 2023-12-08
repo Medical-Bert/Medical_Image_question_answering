@@ -278,6 +278,11 @@ const Suggestion = () => {
         getans();
     };
 
+    const onlineImages = () => {
+        const url = "https://drive.google.com/file/d/1PBZ35aP0V66dzHqD8BrvmvI-T-_OufVu/view"
+
+    };
+
     return (
         <div className="container-fluid">
             <div className="modal fade" id="example" aria-labelledby="exampleModalLabel">
@@ -316,7 +321,7 @@ const Suggestion = () => {
                         <p>Visual Question Answering</p>
                     </div>
                     <div className="mb-auto p-2">
-                        <button className="btn btn-secondary my-3 mx-2" style={{ display: 'flex', alignItems: 'center' }}>
+                        <button className="btn btn-secondary my-3 mx-2" style={{ display: 'flex', alignItems: 'center' }} onClick={onlineImages}>
                             <p>Choose sample images</p>
                         </button>
                         <p>..........Previously Saved .........</p>
