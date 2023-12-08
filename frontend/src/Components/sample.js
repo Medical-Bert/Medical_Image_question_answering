@@ -288,7 +288,7 @@ const Suggestion = () => {
             e.preventDefault();
             getans();
         }
-        if(value.trim!=='' && modelNames==='')
+        if(value.trim!=='' && model==='')
         {
             toast.success('Select The model', {
                 position: 'bottom-right',
