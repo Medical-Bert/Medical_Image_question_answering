@@ -503,34 +503,24 @@ const Suggestion = () => {
                     {uploadedImage && (
                         <div className='p-3'>
                             <form onSubmit={handleSubmit}>
-<<<<<<< Updated upstream
                                 <div className='d-flex text-inline'>
                                     <textarea
                                         onChange={handleChange}
-                                        onKeyDown={handleEnterPress}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter' && !e.shiftKey) {
+                                                e.preventDefault();
+                                                handleSubmit(e);
+                                            }
+                                        }}
                                         placeholder="Ask any question related to the image:"
                                         ref={textAreaRef}
                                         rows={3}
                                         value={value}
                                         style={{ maxHeight: '150px', overflowY: 'auto' }}
                                     />
-                                    <button type='submit' className='btn btn-primary mx-2 btn-lg'disabled={!value.trim()} >
+                                    <button type='submit' className='btn btn-primary mx-2 btn-lg' >
                                         Submit
                                     </button>
-=======
-                                <div className='p-3'>
-                                    <div className=' d-flex text-inline'>
-                                        <textarea
-                                            onChange={handleChange}
-                                            placeholder="Ask any question related to the image:"
-                                            ref={textAreaRef}
-                                            rows={4}
-                                            value={value}
-                                            style={{ maxHeight: '150px', overflowY: 'auto' }}
-                                        />
-                                        <button className='btn btn-primary mx-2 btn-lg' onClick={() => { getans() }}>submit</button>
-                                    </div>
->>>>>>> Stashed changes
                                 </div>
                             </form>
                         </div>
