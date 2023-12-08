@@ -5,9 +5,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './test.css';
 import jsonData from '../data/total.json';
-import myImage from '../data/image2664.jpg';
-import myImage1 from '../data/image2665.jpg';
-import myImage2 from '../data/image2666.jpg';
+
 
 
 import axios from 'axios'
@@ -138,14 +136,7 @@ const Suggestion = () => {
         }
     };
 
-
-
-
     const [qandaContent, setQandaContent] = useState([]);
-
-
-
-
 
     const getans = async () => {
         const question = value;
@@ -226,7 +217,6 @@ const Suggestion = () => {
     const mongosaver = async () => {
         try {
             if (!imgFile) {
-                // Handle error as before
                 return;
             }
 
@@ -256,21 +246,9 @@ const Suggestion = () => {
         }
     };
 
-
-
     const handleChange = (e) => {
         setValue(e.target.value);
     };
-    const handleEnterPress = (e) => {
-        if (e.key === 'Enter' && value.trim() !== '') {
-            e.preventDefault();
-            getans();
-        }
-        else if (e.key === "Enter" && e.shiftKey) {
-            setValue((prevValue) => prevValue + '\n');
-        }
-    };
-
 
     const handleClearImage = () => {
         setQandaContent([]);
@@ -300,38 +278,66 @@ const Suggestion = () => {
         }
     };
 
-    const [selectedImageIndex, setSelectedImageIndex] = useState(null);
-
-    // Function to handle image button click
-    const handleImageButtonClick = (index) => {
-        setSelectedImageIndex(index);
-    };
-
-    const handleUploadImageLink = async (imageLink) => {
+    const handleUploadImageLink = async (imageLink, imageName) => {
         try {
             const response = await fetch(imageLink);
             if (!response.ok) {
                 throw new Error('Failed to fetch image');
             }
-    
+
             const blob = await response.blob();
             const reader = new FileReader();
-    
+
+
+
+            const fileNameWithoutExtension = imageName
+
+            const matchingRows = await data.filter((row) => row.image == fileNameWithoutExtension);
+            console.log(matchingRows);
+            console.log(matchingRows.length);
+
+            // Generate modal content or show a message
+            const modalContent =
+                matchingRows.length > 0 ? (
+                    <table className="table t">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Question</th>
+                                <th>Answer</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {matchingRows.map((row, index) => (
+                                <tr key={index}>
+                                    <td>{row.image}</td>
+                                    <td>{row.question}</td>
+                                    <td>{row.answer}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                ) : (
+                    <p>No suggestions available for this image.</p>
+                );
+
+            setModalContent(modalContent);
+
+
             reader.onloadend = () => {
                 const base64Data = reader.result.split(',')[1];
-                console.log('Base64 Data:', base64Data); // Log the base64 data to the console
-    
-                const file = new File([blob], 'image_from_link.jpg', { type: 'image/jpeg' });
+                const file = new File([blob], `${imageName}.jpg`, { type: 'image/jpeg' });
                 setImgFile(file);
                 setUploadedImage(`data:image/jpeg;base64, ${base64Data}`);
             };
-    
+
             reader.readAsDataURL(blob);
+
         } catch (error) {
             console.error('Error fetching or converting image:', error);
         }
     };
-    
+
 
     const [testimages, setTestimages] = useState(null);
 
@@ -339,27 +345,27 @@ const Suggestion = () => {
         const getimgfiles = (
             <div>
                 <div >
-                    <button className='mx-2 p-2'>
-                        <img src="https://i.imgur.com/09CjS4u.jpeg" alt="image1" name="image5" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }}onClick={() => handleUploadImageLink("https://i.imgur.com/09CjS4u.jpeg")} />
+                    <button className='mx-2 p-2' data-bs-dismiss="modal" onClick={() => handleUploadImageLink("https://i.imgur.com/09CjS4u.jpeg", "image5")}>
+                        <img src="https://i.imgur.com/09CjS4u.jpeg" alt="image1" name="image5" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }}  />
                     </button>
-                    <button className='mx-2 p-2'>
-                        <img src="https://i.imgur.com/AGlC66n.jpeg" alt="image1" name="image2030" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }}onClick={() => handleUploadImageLink("https://i.imgur.com/AGlC66n.jpeg")} />
+                    <button className='mx-2 p-2' data-bs-dismiss="modal" onClick={() => handleUploadImageLink("https://i.imgur.com/AGlC66n.jpeg", "image2030")}>
+                        <img src="https://i.imgur.com/AGlC66n.jpeg" alt="image1" name="image2030" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }}  />
                     </button>
-                    <button className='mx-2 p-2'>
-                        <img src="https://i.imgur.com/rizu3XV.jpeg" alt="image1" name="image2239" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} onClick={() => handleUploadImageLink("https://i.imgur.com/rizu3XV.jpeg")}/>
+                    <button className='mx-2 p-2' data-bs-dismiss="modal"  onClick={() => handleUploadImageLink("https://i.imgur.com/rizu3XV.jpeg", "image2239")}>
+                        <img src="https://i.imgur.com/rizu3XV.jpeg" alt="image1" name="image2239" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }}  />
                     </button>
 
                 </div>
                 <br />
                 <div >
-                    <button className='mx-2 p-2'>
-                        <img src="https://i.imgur.com/ckfg8Ut.jpeg" alt="image1" name="image3089" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} onClick={() => handleUploadImageLink("https://i.imgur.com/ckfg8Ut.jpeg")}/>
+                    <button className='mx-2 p-2' data-bs-dismiss="modal" onClick={() => handleUploadImageLink("https://i.imgur.com/ckfg8Ut.jpeg", "image3089")}>
+                        <img src="https://i.imgur.com/ckfg8Ut.jpeg" alt="image1" name="image3089" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }}  />
                     </button>
-                    <button className='mx-2 p-2'>
-                        <img src="https://i.imgur.com/XdPusYo.jpeg" alt="image1" name="image381" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} onClick={() => handleUploadImageLink("https://i.imgur.com/XdPusYo.jpeg")} />
+                    <button className='mx-2 p-2' data-bs-dismiss="modal"  onClick={() => handleUploadImageLink("https://i.imgur.com/XdPusYo.jpeg", "image381")} >
+                        <img src="https://i.imgur.com/XdPusYo.jpeg" alt="image1" name="image381" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }}/>
                     </button>
-                    <button className='mx-2 p-2'>
-                        <img src="https://i.imgur.com/HvpCJD4.jpeg" alt="image1" name="image2865" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} onClick={() => handleUploadImageLink("https://i.imgur.com/HvpCJD4.jpeg")}/>
+                    <button className='mx-2 p-2' data-bs-dismiss="modal"  onClick={() => handleUploadImageLink("https://i.imgur.com/HvpCJD4.jpeg", "image2865")}>
+                        <img src="https://i.imgur.com/HvpCJD4.jpeg" alt="image1" name="image2865" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }}  />
                     </button>
 
 
@@ -485,7 +491,7 @@ const Suggestion = () => {
                                             <option value="0">Pretrained VILT</option>
                                             <option value="1">Blip Model</option>
                                             <option value="2">FUSION(one word)</option>
-                                            <option value="3">fusion(desc)</option>
+                                            <option value="3">FUSION (decsriptive)</option>
                                         </select>
                                     </div>
                                     {model}
@@ -497,6 +503,7 @@ const Suggestion = () => {
                     {uploadedImage && (
                         <div className='p-3'>
                             <form onSubmit={handleSubmit}>
+<<<<<<< Updated upstream
                                 <div className='d-flex text-inline'>
                                     <textarea
                                         onChange={handleChange}
@@ -510,6 +517,20 @@ const Suggestion = () => {
                                     <button type='submit' className='btn btn-primary mx-2 btn-lg'disabled={!value.trim()} >
                                         Submit
                                     </button>
+=======
+                                <div className='p-3'>
+                                    <div className=' d-flex text-inline'>
+                                        <textarea
+                                            onChange={handleChange}
+                                            placeholder="Ask any question related to the image:"
+                                            ref={textAreaRef}
+                                            rows={4}
+                                            value={value}
+                                            style={{ maxHeight: '150px', overflowY: 'auto' }}
+                                        />
+                                        <button className='btn btn-primary mx-2 btn-lg' onClick={() => { getans() }}>submit</button>
+                                    </div>
+>>>>>>> Stashed changes
                                 </div>
                             </form>
                         </div>
