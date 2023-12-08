@@ -144,9 +144,6 @@ const Suggestion = () => {
     const [qandaContent, setQandaContent] = useState([]);
 
 
-
-
-
     const getans = async () => {
         const question = value;
         console.log(value);
@@ -266,8 +263,7 @@ const Suggestion = () => {
             e.preventDefault();
             getans();
         }
-        else if(e.key==="Enter" && e.shiftKey)
-        {
+        else if (e.key === "Enter" && e.shiftKey) {
             setValue((prevValue) => prevValue + '\n');
         }
     };
@@ -283,13 +279,11 @@ const Suggestion = () => {
     };
 
     const handleSubmit = (e) => {
-        if(value.trim()!=='')
-        {
+        if (value.trim() !== '') {
             e.preventDefault();
             getans();
         }
-        if(value.trim!=='' && model==='')
-        {
+        if (value.trim !== '' && model === '') {
             toast.success('Select The model', {
                 position: 'bottom-right',
                 autoClose: 1400,
@@ -301,7 +295,7 @@ const Suggestion = () => {
                 theme: 'light',
             });
         }
-        else{
+        else {
             toast.success('Enter the question in the field', {
                 position: 'bottom-right',
                 autoClose: 1400,
@@ -315,14 +309,37 @@ const Suggestion = () => {
         }
     };
 
-    const onlineImages = () => {
-        const url1 = "https://drive.google.com/file/d/1PBZ35aP0V66dzHqD8BrvmvI-T-_OufVu/view"
-        const url2 = "https://drive.google.com/file/d/15Ng5mK03pnwjGB1DxMUz1Z6X_JdtDPRZ/view?usp=sharing"
-        const url3 = "https://drive.google.com/file/d/1ZZpnL4b24FawOVKgot-a5HSjNA7fHHFJ/view?usp=sharing"
-        const url4= "https://drive.google.com/file/d/1PBZ35aP0V66dzHqD8BrvmvI-T-_OufVu/view"
-        const url5= "https://drive.google.com/file/d/1RWbl-C5_bqwwzKDgYyVa2148ozQgJQzg/view?usp=sharing"
+    const [testimages, setTestimages] = useState(null);
 
-    };
+
+
+    
+
+    useEffect(() => {
+        const url1 = "https://drive.google.com/file/d/1PBZ35aP0V66dzHqD8BrvmvI-T-_OufVu/view";
+        const url2 = "https://drive.google.com/file/d/15Ng5mK03pnwjGB1DxMUz1Z6X_JdtDPRZ/view?usp=sharing";
+        const url3 = "https://drive.google.com/file/d/1ZZpnL4b24FawOVKgot-a5HSjNA7fHHFJ/view?usp=sharing";
+        const url4 = "https://drive.google.com/file/d/1PBZ35aP0V66dzHqD8BrvmvI-T-_OufVu/view";
+        const url5 = "https://drive.google.com/file/d/1RWbl-C5_bqwwzKDgYyVa2148ozQgJQzg/view?usp=sharing";
+
+        const getimgfiles = (
+            <div>
+                <div style={{ backgroundColor: '#000000', padding: '8px' }}>
+                    <img src={url1} alt="image1" style={{ width: '120px', height: '150px' }} />
+                    <img src={url2} alt="image2" style={{ width: '120px', height: '150px' }} />
+                    <img src={url3} alt="image3" style={{ width: '120px', height: '150px' }} />
+                </div>
+                <br />
+                <div style={{ backgroundColor: '#000000', padding: '8px' }}>
+                    <img src={url4} alt="image4" style={{ width: '120px', height: '150px' }} />
+                    <img src={url5} alt="image5" style={{ width: '120px', height: '150px' }} />
+                </div>
+                <br />
+            </div>
+        );
+
+        setTestimages(getimgfiles);
+    }, []);
 
     return (
         <div className="container-fluid">
@@ -354,6 +371,7 @@ const Suggestion = () => {
                         </div>
                         <div className="modal-body d-flex justify-content-center">
                             <p>helo world</p>
+                            {testimages}
                         </div>
                     </div>
                 </div>
@@ -449,7 +467,7 @@ const Suggestion = () => {
                                 <div className='d-flex text-inline'>
                                     <textarea
                                         onChange={handleChange}
-                                        onKeyDown={handleEnterPress} 
+                                        onKeyDown={handleEnterPress}
                                         placeholder="Ask any question related to the image:"
                                         ref={textAreaRef}
                                         rows={4}
