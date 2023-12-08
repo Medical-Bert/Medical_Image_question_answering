@@ -283,8 +283,36 @@ const Suggestion = () => {
     };
 
     const handleSubmit = (e) => {
-        e.preventDefault();
-        getans();
+        if(value.trim()!=='')
+        {
+            e.preventDefault();
+            getans();
+        }
+        if(value.trim!=='' && modelNames==='')
+        {
+            toast.success('Select The model', {
+                position: 'bottom-right',
+                autoClose: 1400,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'light',
+            });
+        }
+        else{
+            toast.success('Enter the question in the field', {
+                position: 'bottom-right',
+                autoClose: 1400,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'light',
+            });
+        }
     };
 
     const onlineImages = () => {
