@@ -311,12 +311,29 @@ const Suggestion = () => {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h1 className="modal-title fs-5" id="exampleModalLabel">
-                                Suggested questions
+                                Sample questions
                             </h1>
+                            <p className='mx-5 my-3' > ****note that the sample images will only be displayed for test images of our dataset</p>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body d-flex justify-content-center">
                             {modalContent}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="modal fade" id="example1" aria-labelledby="exampleModalLabel">
+                <div className="modal-dialog  modal-dialog-scrollable modal-xl">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5" id="exampleModalLabel">
+                                Sample refference images
+                            </h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body d-flex justify-content-center">
+                            <p>helo world</p>
                         </div>
                     </div>
                 </div>
@@ -342,7 +359,7 @@ const Suggestion = () => {
                         <p>Visual Question Answering</p>
                     </div>
                     <div className="mb-auto p-2">
-                        <button className="btn btn-secondary my-3 mx-2" style={{ display: 'flex', alignItems: 'center' }} onClick={onlineImages}>
+                        <button className="btn btn-secondary my-3 mx-2" style={{ display: 'flex', alignItems: 'center' }} data-bs-toggle="modal" data-bs-target="#example1">
                             <p>Choose sample images</p>
                         </button>
                         <p>..........Previously Saved .........</p>
