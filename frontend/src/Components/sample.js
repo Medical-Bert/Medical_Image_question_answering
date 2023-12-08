@@ -298,18 +298,6 @@ const Suggestion = () => {
                 theme: 'light',
             });
         }
-        else {
-            toast.success('Enter the question in the field', {
-                position: 'bottom-right',
-                autoClose: 1400,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: 'light',
-            });
-        }
     };
 
     const [selectedImageIndex, setSelectedImageIndex] = useState(null);
@@ -515,11 +503,11 @@ const Suggestion = () => {
                                         onKeyDown={handleEnterPress}
                                         placeholder="Ask any question related to the image:"
                                         ref={textAreaRef}
-                                        rows={4}
+                                        rows={3}
                                         value={value}
                                         style={{ maxHeight: '150px', overflowY: 'auto' }}
                                     />
-                                    <button type='submit' className='btn btn-primary mx-2 btn-lg'>
+                                    <button type='submit' className='btn btn-primary mx-2 btn-lg'disabled={!value.trim()} >
                                         Submit
                                     </button>
                                 </div>
