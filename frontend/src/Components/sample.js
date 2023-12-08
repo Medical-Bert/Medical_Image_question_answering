@@ -18,6 +18,7 @@ const Suggestion = () => {
     const navigate = useNavigate();
     const fileInputRef = useRef(null);
     const [file, setFile] = useState(null);
+    const [model, setModel] = useState(null);
     const [uploadedImage, setUploadedImage] = useState(null);
     const [imgpath, setImgpath] = useState(null);
     const [value, setValue] = useState("");
@@ -178,6 +179,7 @@ const Suggestion = () => {
         formData.append('question', question);
         formData.append('flaskurl', flaskurl);
         formData.append('file', imgFile);
+        formData.append('model', model);
         console.log(imgFile.name);
 
         try {
@@ -197,10 +199,19 @@ const Suggestion = () => {
             // Continue with any additional logic using pAnswer
             console.log('Final method:', pAnswer);
 
+
+
+            const modelNames = {
+                "0": "( PRETRAINED VILT )",
+                "1": "( BLIP MODEL )",
+                "2": "( FUSION ONE WORD )",
+                "3": "( FUSION DESCRIPTIVE)",
+            };
+
             const newContent = [
                 <>
                     <div key={question} style={{ backgroundColor: '#000000', padding: '8px' }}>
-                        <strong style={{ color: '#18e74f' }}>Question:</strong> {question}
+                        <strong style={{ color: '#18e74f' }}><span style={{ color: 'magenta' }}>{modelNames[model]}</span>   Question:</strong> {question}
                     </div>
                     <div className='my-2' style={{ backgroundColor: '#000000', padding: '8px', borderRadius: '8px' }}>
                         <div key={pAnswer} style={{ padding: '8px' }}>
@@ -290,12 +301,6 @@ const Suggestion = () => {
         getans();
     };
 
-    const openterminal = () => {
-        var exec = require('child_process').exec;
-        exec('cmd.exe');
-    };
-
-
     return (
         <div className="container-fluid">
             <div className="modal fade" id="example" aria-labelledby="exampleModalLabel">
@@ -331,9 +336,6 @@ const Suggestion = () => {
                     <div>
                         <br />
                         <strong>Medical Image </strong>
-
-
-
                         <p>Visual Question Answering</p>
                     </div>
                     <div className="mb-auto p-2">
@@ -385,7 +387,7 @@ const Suggestion = () => {
                                         className="hieght-and-width mx-2"
                                     />
                                     <button className="btn btn-info btn my-2 mx-3" data-bs-toggle="modal" data-bs-target="#example">
-                                        Suggestions
+                                        Sample questions
                                     </button>
                                     <button className='btn btn-primary my-2 mx-2' onClick={mongosaver}>save to mongo</button>
                                     <button className='btn btn-danger my-2 mx-2' onClick={handleClearImage}>clear</button>
@@ -395,14 +397,16 @@ const Suggestion = () => {
                         {uploadedImage && (
                             <>
                                 <div className="col-6 scrollable-div my-3 bordered-primary" id="qanda">
-                                    <select id="dropdown">
-                                        <option value="N/A">Choose model</option>
-                                        <option value="1">blip model</option>
-                                        <option value="2">fusion(one word)</option>
-                                        <option value="3">fusion(desc)</option>
-                                        
-                                    </select>
-                                    <button className='btn btn-primary mx-5' onClick={openterminal}> one word</button>
+                                    <div className='col-5'>
+                                        <select id="dropdown" className='form-control' onChange={(e) => { setModel(e.target.value) }}>
+                                            <option value="N/A">Choose model</option>
+                                            <option value="0">Pretrained VILT</option>
+                                            <option value="1">Blip Model</option>
+                                            <option value="2">FUSION(one word)</option>
+                                            <option value="3">fusion(desc)</option>
+                                        </select>
+                                    </div>
+                                    {model}
                                     {qandaContent}
                                 </div>
                             </>
@@ -420,10 +424,13 @@ const Suggestion = () => {
                                         value={value}
                                         style={{ maxHeight: '150px', overflowY: 'auto' }}
                                     />
-                                    <button type='submit' className='btn btn-primary mx-2 btn-lg'>submit</button>
+                                    <button type='submit' className='btn btn-primary mx-2 btn-lg'>
+                                        Submit
+                                    </button>
                                 </div>
                             </form>
                         </div>
+
                     )}
                 </div>
             </div>

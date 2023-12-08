@@ -13,7 +13,7 @@ from PIL import Image
 text_processor = BlipProcessor.from_pretrained("Salesforce/blip-vqa-base")
 image_processor = BlipImageProcessor.from_pretrained("Salesforce/blip-vqa-base")
 
-model_path = "BLIP_All_img_50_epochs.pkl"
+model_path = "C:\\Users\\Vishnu\\Documents\\Gitprojects\\ps\\pathvqa\\BLIP_All_img_50_epochs.pkl"
 
 # Check for CUDA availability
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -90,7 +90,7 @@ def predict():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    port = 80
+    port = 8001
     print(f"Starting the app on port {port}")
     print("running the blip model successfully")
     app.run(debug=True,port=port)

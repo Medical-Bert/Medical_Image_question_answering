@@ -330,7 +330,7 @@ def predict():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    port = 8000
+    port = 8002
     print(f"Starting the app on port {port}")
     print("running the one word fusion model successfully")
     app.run(debug=True, port=port)

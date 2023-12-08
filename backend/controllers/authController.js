@@ -292,11 +292,11 @@ const fs = require('fs').promises; // Using fs.promises for asynchronous file op
 // };
 
 
-
 const modeloutput = async (req, res) => {
     console.log(req.body);
 
     const question = req.body.question;
+    const model = req.body.model;
     const file = req.files.file;
     console.log(question);
     console.log(file);
@@ -315,8 +315,12 @@ const modeloutput = async (req, res) => {
             name: file.originalFilename,
         };
 
-        // Assuming axios is properly imported in your actual code
-        const response = await axios.post('https://16.171.52.38:80/predict', input_data, {
+        // Convert the model value to a number and add it to 8000
+        const modelNumber = parseInt(model, 10);
+        const newPortNumber = 8000 + modelNumber;
+
+        // Concatenate the new port number to the axios post URL
+        const response = await axios.post(`http://127.0.0.1:${newPortNumber}/predict`, input_data, {
             headers: {
                 'Content-Type': 'application/json',
             },
