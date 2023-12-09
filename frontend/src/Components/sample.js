@@ -55,6 +55,7 @@ const Suggestion = () => {
 
     useEffect(() => {
         setData(jsonData);
+        console.log("completed installation")
         setStoredUsername(localStorage.getItem('loggeduser'))
     }, []);
 
@@ -291,8 +292,10 @@ const Suggestion = () => {
 
 
             const fileNameWithoutExtension = imageName
+            console.log("image name is ",fileNameWithoutExtension)
 
-            const matchingRows = await data.filter((row) => row.image == fileNameWithoutExtension);
+            console.log(jsonData[0]);
+            const matchingRows = jsonData.filter((row) => row.image == fileNameWithoutExtension);
             console.log(matchingRows);
             console.log(matchingRows.length);
 
@@ -322,8 +325,6 @@ const Suggestion = () => {
                 );
 
             setModalContent(modalContent);
-
-
             reader.onloadend = () => {
                 const base64Data = reader.result.split(',')[1];
                 const file = new File([blob], `${imageName}.jpg`, { type: 'image/jpeg' });
@@ -338,34 +339,33 @@ const Suggestion = () => {
         }
     };
 
-
     const [testimages, setTestimages] = useState(null);
 
     useEffect(() => {
         const getimgfiles = (
             <div>
                 <div >
-                    <button className='mx-2 p-2' data-bs-dismiss="modal" onClick={() => handleUploadImageLink("https://i.imgur.com/09CjS4u.jpeg", "image5")}>
-                        <img src="https://i.imgur.com/09CjS4u.jpeg" alt="image1" name="image5" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }}  />
+                    <button className='mx-2 p-2' onClick={() => handleUploadImageLink("https://i.imgur.com/09CjS4u.jpeg", "image5")}>
+                        <img src="https://i.imgur.com/09CjS4u.jpeg" alt="image1" name="image5" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} />
                     </button>
-                    <button className='mx-2 p-2' data-bs-dismiss="modal" onClick={() => handleUploadImageLink("https://i.imgur.com/AGlC66n.jpeg", "image2030")}>
-                        <img src="https://i.imgur.com/AGlC66n.jpeg" alt="image1" name="image2030" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }}  />
+                    <button className='mx-2 p-2' onClick={() => handleUploadImageLink("https://i.imgur.com/AGlC66n.jpeg", "image2030")}>
+                        <img src="https://i.imgur.com/AGlC66n.jpeg" alt="image1" name="image2030" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} />
                     </button>
-                    <button className='mx-2 p-2' data-bs-dismiss="modal"  onClick={() => handleUploadImageLink("https://i.imgur.com/rizu3XV.jpeg", "image2239")}>
-                        <img src="https://i.imgur.com/rizu3XV.jpeg" alt="image1" name="image2239" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }}  />
+                    <button className='mx-2 p-2' onClick={() => handleUploadImageLink("https://i.imgur.com/rizu3XV.jpeg", "image2239")}>
+                        <img src="https://i.imgur.com/rizu3XV.jpeg" alt="image1" name="image2239" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} />
                     </button>
 
                 </div>
                 <br />
                 <div >
-                    <button className='mx-2 p-2' data-bs-dismiss="modal" onClick={() => handleUploadImageLink("https://i.imgur.com/ckfg8Ut.jpeg", "image3089")}>
-                        <img src="https://i.imgur.com/ckfg8Ut.jpeg" alt="image1" name="image3089" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }}  />
+                    <button className='mx-2 p-2' onClick={() => handleUploadImageLink("https://i.imgur.com/ckfg8Ut.jpeg", "image3089")}>
+                        <img src="https://i.imgur.com/ckfg8Ut.jpeg" alt="image1" name="image3089" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} />
                     </button>
-                    <button className='mx-2 p-2' data-bs-dismiss="modal"  onClick={() => handleUploadImageLink("https://i.imgur.com/XdPusYo.jpeg", "image381")} >
-                        <img src="https://i.imgur.com/XdPusYo.jpeg" alt="image1" name="image381" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }}/>
+                    <button className='mx-2 p-2' onClick={() => handleUploadImageLink("https://i.imgur.com/XdPusYo.jpeg", "image381")} >
+                        <img src="https://i.imgur.com/XdPusYo.jpeg" alt="image1" name="image381" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} />
                     </button>
-                    <button className='mx-2 p-2' data-bs-dismiss="modal"  onClick={() => handleUploadImageLink("https://i.imgur.com/HvpCJD4.jpeg", "image2865")}>
-                        <img src="https://i.imgur.com/HvpCJD4.jpeg" alt="image1" name="image2865" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }}  />
+                    <button className='mx-2 p-2' onClick={() => handleUploadImageLink("https://i.imgur.com/HvpCJD4.jpeg", "image2865")}>
+                        <img src="https://i.imgur.com/HvpCJD4.jpeg" alt="image1" name="image2865" className='mx-3 my-3 ' style={{ width: '120px', height: '150px' }} />
                     </button>
 
 
@@ -396,8 +396,7 @@ const Suggestion = () => {
                     </div>
                 </div>
             </div>
-
-            <div className="modal fade" id="example1" aria-labelledby="exampleModalLabel">
+            <div className="modal fade" id="example1" aria-labelledby="exampleModalLabel" >
                 <div className="modal-dialog  modal-dialog-scrollable modal-lg">
                     <div className="modal-content">
                         <div className="modal-header">
@@ -410,11 +409,12 @@ const Suggestion = () => {
                             {testimages}
                         </div>
                         <button className='btn btn-primary btn-lg' onClick={() => handleUploadImageLink("https://i.imgur.com/09CjS4u.jpeg")}>
-                            uploadimagelink
+                            close 
                         </button>
                     </div>
                 </div>
             </div>
+
 
             <ToastContainer
                 position="bottom-right"
@@ -518,9 +518,11 @@ const Suggestion = () => {
                                         value={value}
                                         style={{ maxHeight: '150px', overflowY: 'auto' }}
                                     />
-                                    <button type='submit' className='btn btn-primary mx-2 btn-lg' >
-                                        Submit
-                                    </button>
+                                    {value && (
+                                        <button type='submit' className='btn btn-primary mx-2 btn-lg' >
+                                            Submit
+                                        </button>)
+                                    }
                                 </div>
                             </form>
                         </div>
