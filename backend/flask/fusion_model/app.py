@@ -84,7 +84,7 @@ class MultimodalCollator:
 
     def preprocess_images(self, images: List[str]):
         processed_images = self.preprocessor(
-            images=[Image.open(os.path.join("..", r"C:\Users\Vishnu\Documents\Gitprojects\ps\pathvqa\train",   image_id + ".jpg")).convert('RGB') for image_id in images],
+            images=[Image.open(os.path.join("..", r"C:\Users\Vishnu\Documents\Gitprojects\ps\Medical_Image_question_answering\backend\flask\fusion_model\uploads",   image_id + ".jpg")).convert('RGB') for image_id in images],
             return_tensors="pt",
         )
         return {

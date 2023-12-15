@@ -408,7 +408,7 @@ const Suggestion = () => {
                         <div className="modal-body d-flex justify-content-center">
                             {testimages}
                         </div>
-                        <button className='btn btn-primary btn-lg' onClick={() => handleUploadImageLink("https://i.imgur.com/09CjS4u.jpeg")}>
+                        <button className='btn btn-primary btn-lg' data-bs-dismiss="modal">
                             close 
                         </button>
                     </div>
