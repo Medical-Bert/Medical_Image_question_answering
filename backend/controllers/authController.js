@@ -140,10 +140,7 @@ const genotp = async (req, res) => {
     otp1 = otp
     console.log("pathetic")
     const transporter = nodemailer.createTransport({
-        service: "gmail",
-        host: "smtp.gmail.com",
-        port: 587,
-        secure: false,
+        service: "hotmail",
         auth: {
             // TODO: replace `user` and `pass` values from <https://forwardemail.net>
             user: process.env.REACT_APP_email,
@@ -170,6 +167,51 @@ const genotp = async (req, res) => {
         res.status(500).json({ success: false, message: 'Failed to send OTP' });
     }
 };
+
+// const genotp = async (req, res) => {
+//     const { userId, email } = req.body;
+
+//     // Generate a random 6-digit OTP
+//     const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+//     console.log("user id is", userId)
+
+//     console.log("email id  is", email)
+//     console.log("otp  is")
+//     console.log(otp)
+//     otp1 = otp
+//     console.log("pathetic")
+//     const transporter = nodemailer.createTransport({
+//         service: "gmail",
+//         host: "smtp.gmail.com",
+//         port: 587,
+//         secure: false,
+//         auth: {
+//             // TODO: replace `user` and `pass` values from <https://forwardemail.net>
+//             user: process.env.REACT_APP_email,
+//             pass: process.env.REACT_APP_password,
+//         },
+//     });
+
+//     console.log("pathetic fool")
+
+//     const mailOptions = {
+//         from: process.env.REACT_APP_email,
+//         to: userId,
+//         subject: 'OTP Verification from our medical vqa team',
+//         text: `Your OTP for verification is: ${otp}`,
+//     };
+//     console.log("pathetic")
+
+//     try {
+//         const info = await transporter.sendMail(mailOptions);
+//         console.log('Email sent: ' + info.response);
+//         res.json({ success: true, message: 'OTP sent successfully' });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ success: false, message: 'Failed to send OTP' });
+//     }
+// };
 
 const signup = async (req, res) => {
     try {
