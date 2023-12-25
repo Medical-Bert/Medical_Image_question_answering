@@ -19,6 +19,7 @@ router.post('/storeInfo', authController.storeInfo);
 
 // Add the new route for getans
 router.post('/modeloutput', authController.modeloutput);
+router.post('/calc', authController.modeloutput1);
 
 
 

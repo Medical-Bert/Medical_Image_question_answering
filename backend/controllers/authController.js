@@ -334,7 +334,39 @@ const fs = require('fs').promises; // Using fs.promises for asynchronous file op
 // };
 
 
-const modeloutput = async (req, res) => {
+const modeloutput1 = async (req, res) => {
+    console.log(req.body);
+    try {
+        const num = req.body.number;
+        const operator = req.body.operation;  // Fix: Change 'operator' to 'op'
+
+        // Prepare input data for the POST request
+        const input_data = {
+            number: num,
+        };
+
+        // Concatenate the new port number to the axios post URL
+        const response = await axios.post(`http://16.171.8.45/${operator}/calculate`, input_data, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        console.log('Predicted value:', response.data);
+
+        // Send the prediction as JSON in the HTTP response
+        res.json(response.data);
+    } catch (error) {
+        console.error('Error:', error.message);
+
+        // Send a 500 Internal Server Error response with the error message
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+
+const modeloutput= async (req, res) => {
     console.log(req.body);
 
     const question = req.body.question;
@@ -359,14 +391,19 @@ const modeloutput = async (req, res) => {
 
         // Convert the model value to a number and add it to 8000
         const modelNumber = parseInt(model, 10);
-        const newPortNumber = 8000 + modelNumber;
+        const newPortNumber = modelNumber;
 
         // Concatenate the new port number to the axios post URL
-        const response = await axios.post(`http://127.0.0.1:${newPortNumber}/predict`, input_data, {
+        const response = await axios.post(`http://127.0.0.1:8000/predict${newPortNumber}`, input_data, {
             headers: {
                 'Content-Type': 'application/json',
             },
         });
+        // const response = await axios.post(`http://127.0.0.1:${newPortNumber}/predict`, input_data, {
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        // });
 
         console.log('Predicted value:', response.data.prediction);
 
@@ -389,6 +426,7 @@ module.exports = {
     getProfile,
     getotp,
     modeloutput,
+    modeloutput1,
     imgupload,
     storeInfo
 };

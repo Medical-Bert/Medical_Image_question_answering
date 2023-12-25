@@ -4,12 +4,12 @@ import LoginPage from './Components/login';
 import Tester from './Components/rester';
 import Suggestion from './Components/sample';
 
-
 import React, { useEffect, useState } from "react";
 import { useNavigate, BrowserRouter as Router, Routes, Route  } from 'react-router-dom';
 import axios from "axios";
 import Cookies from 'js-cookie';
 import Verification from './Components/verification';
+import Calculator from './Components/calc';
 
 function Home() {
     const navigate = useNavigate();
@@ -90,6 +90,7 @@ function App() {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/test" element={<Suggestion />} />
                 <Route path="/verify" element={<Verification />} />
+                <Route path='/calc' element ={<Calculator/>}></Route>
             </Routes>
         </Router>
     );
