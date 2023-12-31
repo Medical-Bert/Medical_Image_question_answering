@@ -391,19 +391,20 @@ const modeloutput= async (req, res) => {
 
         // Convert the model value to a number and add it to 8000
         const modelNumber = parseInt(model, 10);
-        const newPortNumber = modelNumber;
+        // const newPortNumber = modelNumber;
+        const newPortNumber =8000+ modelNumber;
 
         // Concatenate the new port number to the axios post URL
-        const response = await axios.post(`http://127.0.0.1:8000/predict${newPortNumber}`, input_data, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        // const response = await axios.post(`http://127.0.0.1:${newPortNumber}/predict`, input_data, {
+        // const response = await axios.post(`http://127.0.0.1:8000/predict${newPortNumber}`, input_data, {
         //     headers: {
         //         'Content-Type': 'application/json',
         //     },
         // });
+        const response = await axios.post(`http://127.0.0.1:${newPortNumber}/predict`, input_data, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
 
         console.log('Predicted value:', response.data.prediction);
 
