@@ -138,7 +138,7 @@ const genotp = async (req, res) => {
     console.log("otp  is")
     console.log(otp)
     otp1 = otp
-    console.log("pathetic")
+    
     const transporter = nodemailer.createTransport({
         service: "hotmail",
         auth: {
@@ -148,15 +148,13 @@ const genotp = async (req, res) => {
         },
     });
 
-    console.log("pathetic fool")
-
     const mailOptions = {
         from: process.env.REACT_APP_email,
         to: userId,
         subject: 'OTP Verification from our medical vqa team',
         text: `Your OTP for verification is: ${otp}`,
     };
-    console.log("pathetic")
+
 
     try {
         const info = await transporter.sendMail(mailOptions);

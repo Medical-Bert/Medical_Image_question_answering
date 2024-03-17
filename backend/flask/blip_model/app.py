@@ -69,17 +69,13 @@ def predict():
         image_data = input_data['data']
         filename = input_data.get('name', 'default_filename.jpg')
 
-        # Ensure the image data is a bytes-like object
         image_bytes = base64.b64decode(image_data)
 
-        # Convert bytes to image
         image = Image.open(BytesIO(image_bytes))
 
-        # Save the image to the upload folder with the original filename
         filename = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         image.save(filename)
 
-        # Process the image and question
         img = Image.open(filename)
 
         output = generate_answer(filename, question)
