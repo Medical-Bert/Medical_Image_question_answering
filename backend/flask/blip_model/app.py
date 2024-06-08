@@ -13,7 +13,8 @@ from PIL import Image
 text_processor = BlipProcessor.from_pretrained("Salesforce/blip-vqa-base")
 image_processor = BlipImageProcessor.from_pretrained("Salesforce/blip-vqa-base")
 
-model_path = "C:\\Users\\Vishnu\\Documents\\Gitprojects\\ps\\pathvqa\\BLIP_All_img_50_epochs.pkl"
+# model_path = "C:\\Users\\Vishnu\\Documents\\Gitprojects\\ps\\pathvqa\\BLIP_All_img_50_epochs.pkl"
+model_path = "C:\\Users\\Vishnu\\Documents\\Gitprojects\\ps\\pathvqa\\BLIP_epochs_50.pkl"
 
 # Check for CUDA availability
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
