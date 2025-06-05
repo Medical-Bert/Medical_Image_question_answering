@@ -14,7 +14,7 @@ const maxAge = 3 * 24 * 60 * 60 * 1000;
 var otp1 = 1;
 
 const multer = require('multer');
-const { application } = require('express');
+const { application } = require('express'); 
 
 
 
@@ -82,8 +82,6 @@ const storeInfo = async (req, res) => {
         res.status(500).json({ success: false, message: 'Failed to store data' });
     }
 };
-
-
 
 
 

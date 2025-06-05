@@ -20,6 +20,7 @@ const SignUp = () => {
         USERNAME: 'username',
         EMAIL: 'email',
         PASSWORD: 'password',
+        ROLE:'role',
     };
 
     useEffect(() => {
